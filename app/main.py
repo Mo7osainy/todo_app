@@ -4,16 +4,10 @@ from models import create_task, get_all_tasks, delete_task
 
 app = Flask(__name__)
 
-# --------------------------
-# واجهة المستخدم (الويب)
-# --------------------------
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# --------------------------
-# REST API
-# --------------------------
 @app.route('/api/tasks', methods=['GET'])
 def list_tasks():
     tasks = get_all_tasks()
