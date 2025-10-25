@@ -1,0 +1,42 @@
+version: "3"
+services:
+  web-app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=${DB_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+    restart: always
+
+  db:
+    image: postgres:16
+    container_name: todo_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  nginx:
+    image: nginx:latest
+    container_name: project-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web-app
+    restart: always
+
+volumes:
+  pgdata:
+
