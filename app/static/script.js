@@ -7,15 +7,13 @@ const showTasksBtn = document.getElementById("showTasksBtn");
 
 let currentTasks = [];
 
-// تحميل عدد المهام فقط
 async function loadTaskCount() {
     const res = await fetch(apiUrl);
     currentTasks = await res.json();
     taskCount.textContent = `You have ${currentTasks.length} task${currentTasks.length !== 1 ? 's' : ''}.`;
-    taskList.innerHTML = ""; // مسح أي عرض قديم
+    taskList.innerHTML = ""; 
 }
 
-// تحميل المهام كاملة عند الضغط على الزر
 function renderTasks() {
     taskList.innerHTML = "";
     currentTasks.forEach(task => {
@@ -37,13 +35,13 @@ async function addTask() {
         body: JSON.stringify({ title })
     });
     taskInput.value = "";
-    await loadTaskCount(); // تحديث العدد بعد إضافة مهمة
+    await loadTaskCount();
 }
 
 async function deleteTask(id) {
     await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
-    await loadTaskCount(); // تحديث العدد بعد الحذف
-    renderTasks(); // إعادة عرض المهام لو كانت ظاهرة
+    await loadTaskCount(); 
+    renderTasks(); 
 }
 
 showTasksBtn.addEventListener("click", renderTasks);
